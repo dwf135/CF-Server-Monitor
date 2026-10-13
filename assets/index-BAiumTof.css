@@ -41,3 +41,34 @@ body.style-win11.light .btn{background:#ffffff;border-color:rgba(0,0,0,.15)}
 body.style-win11.light .btn:hover{background:#f3f3f3}
 body.style-win11.light .popup-menu{background:rgba(255,255,255,.97);border-color:rgba(0,0,0,.10);color:#1b1b1b}
 body.style-win11.light .dialog{background:#fafafa}
+
+/* ===== Win11 v2: 卡片标题修复 / 在线蓝胶囊 / 离线突出 / 风格菜单 ===== */
+body.style-win11 .server-card>.title-bar{height:30px;padding:0 10px;gap:6px;background:var(--window-alt);color:var(--text);border-bottom:1px solid rgba(255,255,255,.06)}
+body.style-win11 .server-card>.title-bar .title-bar-text{flex:1;min-width:0;font-size:12px;font-weight:600;color:var(--text)}
+body.style-win11 .server-card>.title-bar.inactive{color:var(--text-muted);background:var(--window-alt)}
+body.style-win11.light .server-card>.title-bar{background:#eef1f5;color:#1b1b1b;border-bottom-color:rgba(0,0,0,.07)}
+body.style-win11.light .server-card>.title-bar .title-bar-text{color:#1b1b1b}
+body.style-win11.light .server-card>.title-bar.inactive{color:#6b6b6b;background:#eef1f5}
+body.style-win11 .server-card .card-status{display:inline-flex;align-items:center;gap:6px;height:18px;padding:0 10px;border-radius:9px;font-size:11px;font-weight:500;line-height:1;background:rgba(0,120,212,.16);color:#4cc2ff;border:none;text-shadow:none}
+body.style-win11 .server-card .card-status .led{width:8px;height:8px;border:none;border-radius:50%;background:#3ccb5a;box-shadow:0 0 6px rgba(60,203,90,.75)}
+body.style-win11.light .server-card .card-status{background:rgba(0,103,192,.10);color:#0057a6}
+body.style-win11.light .server-card .card-status .led{background:#0f7b0f;box-shadow:none}
+body.style-win11 .server-card.offline{border-color:rgba(255,90,90,.55);background:rgba(255,90,90,.05)}
+body.style-win11 .server-card.offline>.title-bar{background:rgba(255,90,90,.13);color:#ff9a9a;border-bottom-color:rgba(255,90,90,.28)}
+body.style-win11 .server-card.offline>.title-bar .title-bar-text{color:#ffb3b3}
+body.style-win11 .server-card.offline .card-status{background:rgba(255,90,90,.18);color:#ff9a9a}
+body.style-win11 .server-card.offline .led{background:#ff5a5a;box-shadow:0 0 6px rgba(255,90,90,.7)}
+body.style-win11.light .server-card.offline{border-color:rgba(209,52,56,.45);background:rgba(209,52,56,.04)}
+body.style-win11.light .server-card.offline>.title-bar{background:rgba(209,52,56,.10);color:#a4262c;border-bottom-color:rgba(209,52,56,.22)}
+body.style-win11.light .server-card.offline>.title-bar .title-bar-text{color:#a4262c}
+body.style-win11.light .server-card.offline .card-status{background:rgba(209,52,56,.12);color:#a4262c}
+body.style-win11 .popup-menu{overflow:visible;padding:6px;background:#2c2c2c;border:1px solid rgba(255,255,255,.09);border-radius:8px;box-shadow:0 12px 36px rgba(0,0,0,.5)}
+body.style-win11 .popup-menu-item{height:28px;padding:0 12px 0 6px;border-radius:5px;font-size:12px;color:var(--text)}
+body.style-win11 .popup-menu-item:hover,body.style-win11 .popup-menu-item:focus-visible{background:rgba(255,255,255,.09);color:var(--text);outline:none}
+body.style-win11 .popup-menu-check{color:#4cc2ff;font-weight:600}
+body.style-win11 .popup-menu-sep{height:1px;margin:5px 8px;border:0;background:rgba(255,255,255,.10)}
+body.style-win11.light .popup-menu{background:#ffffff;border-color:rgba(0,0,0,.10);box-shadow:0 12px 36px rgba(0,0,0,.16)}
+body.style-win11.light .popup-menu-item{color:#1b1b1b}
+body.style-win11.light .popup-menu-item:hover{background:rgba(0,0,0,.06);color:#1b1b1b}
+body.style-win11.light .popup-menu-check{color:#0067c0}
+body.style-win11.light .popup-menu-sep{background:rgba(0,0,0,.10)}
