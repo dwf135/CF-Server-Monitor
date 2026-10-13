@@ -33,6 +33,7 @@
     body.style-osx #boot .boot-title { height: 22px; justify-content: center; font-weight: normal; font-size: 13px; color: #262626; border-bottom: 1px solid #858585; border-radius: 5px 5px 0 0; background: linear-gradient(180deg, #e8e8e8 0%, #d3d3d3 100%); }
     body.style-osx #boot .boot-bar { padding: 0; border: 1px solid #8e8e8e; border-radius: 7px; background: linear-gradient(180deg, #c9c9c9 0%, #f2f2f2 100%); }
     body.style-osx #boot .boot-fill { border-radius: 6px; background: linear-gradient(180deg, #a8cdf8 0%, #5b9ceb 45%, #3d86e3 55%, #7bb6f3 100%); }
+    body.style-win11 #boot{background:#202020;font-family:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif}body.style-win11.light #boot{background:#f3f3f3}body.style-win11 #boot .boot-win{width:380px;max-width:100%;padding:0;background:#1f1f1f;color:#f3f3f3;border:1px solid #3a3a3a;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.45);overflow:hidden}body.style-win11.light #boot .boot-win{background:#ffffff;color:#1a1a1a;border-color:#d9d9d9;box-shadow:0 12px 40px rgba(0,0,0,.2)}body.style-win11 #boot .boot-title{height:40px;padding:0 16px;display:flex;align-items:center;font-weight:600;font-size:13px;color:#fff;background:#0067c0;border-radius:12px 12px 0 0}body.style-win11 #boot .boot-body{padding:18px;display:flex;flex-direction:column;gap:10px;line-height:1.6}body.style-win11 #boot .boot-bar{height:8px;padding:0;border:0;border-radius:6px;background:#2b2b2b;overflow:hidden}body.style-win11.light #boot .boot-bar{background:#e6e6e6}body.style-win11 #boot .boot-fill{background:linear-gradient(90deg,#0067c0,#4cc2ff);border-radius:6px}body.style-win11 #boot .boot-err{color:#ff8080}body.style-win11 #boot .boot-hint{color:#b9b9b9}
     @keyframes boot-slide { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
   </style>
   <script type="module" crossorigin src="./assets/index-B4K_rJ4Y.js"></script>
@@ -46,8 +47,8 @@
         var light = t === 'light' || (t !== 'dark' && !(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches));
         if (light) document.body.classList.add('light');
         var visitor = String(localStorage.getItem('win2000_style') || '').trim().toLowerCase();
-        var style = (visitor === 'win2000' || visitor === 'xp' || visitor === 'win31' || visitor === 'osx') ? visitor : String(localStorage.getItem('win2000_style_site') || '').trim().toLowerCase();
-        if (style === 'xp' || style === 'win31' || style === 'osx') document.body.classList.add('style-' + style);
+        var style = (visitor === 'win2000' || visitor === 'xp' || visitor === 'win31' || visitor === 'osx' || visitor === 'win11') ? visitor : String(localStorage.getItem('win2000_style_site') || '').trim().toLowerCase();
+        if (style === 'xp' || style === 'win31' || style === 'osx' || style === 'win11') document.body.classList.add('style-' + style);
       } catch (e) {}
     })();
   </script>
