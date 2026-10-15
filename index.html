@@ -76,5 +76,321 @@
     </div>
   </div>
   <div id="app"></div>
+  <div id="nz-root" hidden></div>
+  <style>
+    body.nezha-native{background:#392f41 !important;margin:0;min-height:100vh}
+    body.nezha-native #boot,body.nezha-native #app{display:none !important}
+    #nz-root{display:none;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;color:#ddd;background:#392f41;min-height:100vh;font-size:13px}
+    body.nezha-native #nz-root{display:block}
+    #nz-root *{box-sizing:border-box}
+    #nz-root a{color:inherit;text-decoration:none}
+    .nz-nav{position:sticky;top:0;z-index:50;background:rgba(30,24,36,.94);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nz-nav-in{max-width:1280px;margin:0 auto;height:46px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .nz-logo{font-weight:700;font-size:16px;color:#fff;display:flex;align-items:center;gap:8px;white-space:nowrap}
+    .nz-logo .dot{width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,#74dbef,#08f);flex:none}
+    .nz-nav-stats{display:flex;align-items:center;gap:14px;font-size:12px;color:#9a91a4;flex-wrap:wrap;justify-content:flex-end}
+    .nz-nav-stats .sep{opacity:.4}
+    .nz-on{color:#4caf50}.nz-offc{color:#f44336}.nz-up{color:#4caf50}.nz-down{color:#4caf50}
+    .nz-login{display:inline-flex;align-items:center;gap:5px;padding:4px 13px;border:1px solid rgba(255,255,255,.16);border-radius:15px;font-size:12px;color:#ccc;cursor:pointer;background:transparent}
+    .nz-login:hover{border-color:#08f;color:#fff;background:rgba(8,136,255,.12)}
+    .nz-main{max-width:1280px;margin:0 auto;padding:14px 20px 70px}
+    .nz-panel{background:#2e2735;border:1px solid rgba(255,255,255,.05);border-radius:14px;padding:16px 18px}
+    .nz-tabs{display:flex;gap:6px}
+    .nz-tab{padding:6px 15px;border-radius:8px;font-size:13px;color:#b5adc0;cursor:pointer;border:0;background:transparent;font-family:inherit}
+    .nz-tab.active{background:linear-gradient(90deg,#2ca9e1,#08f);color:#fff;font-weight:600}
+    .nz-tab:hover:not(.active){background:rgba(255,255,255,.06);color:#fff}
+    .nz-chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px 0 4px}
+    .nz-chips .grow{flex:1}
+    .nz-chip{padding:3px 12px;border-radius:14px;font-size:12px;color:#b5adc0;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);cursor:pointer;font-family:inherit}
+    .nz-chip .n{opacity:.65;margin-left:4px}
+    .nz-chip.active{background:#08f;color:#fff;border-color:#08f}
+    .nz-chip:hover:not(.active){border-color:rgba(255,255,255,.25);color:#fff}
+    .nz-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:10px 0 14px}
+    @media (max-width:760px){.nz-stats{grid-template-columns:repeat(2,1fr)}}
+    .nz-stat .lb{font-size:12px;color:#8f8698}
+    .nz-stat .vl{font-size:15px;color:#eee;margin-top:3px}
+    .nz-stat .vl .nz-up,.nz-stat .vl .nz-down{font-size:13px}
+    .nz-group{font-weight:700;color:#e8e5ec;font-size:14px;margin:4px 0 12px}
+    .nz-group .n{color:#8f8698;font-weight:400;margin-left:6px}
+    .nz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(252px,1fr));gap:13px}
+    .nz-card{background:#372e41;border:1px solid rgba(255,255,255,.06);border-radius:11px;padding:12px 13px;display:flex;flex-direction:column;gap:7px;transition:box-shadow .2s}
+    .nz-card:hover{box-shadow:0 6px 18px rgba(0,0,0,.35)}
+    .nz-card.offline{opacity:.55}
+    .nz-card-head{display:flex;align-items:center;gap:7px}
+    .nz-flag{font-size:15px;flex:none}
+    .nz-name{font-weight:700;font-size:14px;color:#fff;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .nz-os{font-size:13px;flex:none;opacity:.85}
+    .nz-badge{font-size:11px;padding:2px 9px;border-radius:10px;font-weight:600;flex:none}
+    .nz-badge.on{background:rgba(76,175,80,.15);color:#4caf50}
+    .nz-badge.off{background:rgba(244,67,54,.18);color:#ff6b74}
+    .nz-sub{display:flex;align-items:center;gap:9px;font-size:11px;color:#8f8698;margin-top:-4px;flex-wrap:wrap}
+    .nz-sub .ipb{background:rgba(255,255,255,.07);border-radius:4px;padding:1px 6px;font-size:10px}
+    .nz-sub .exp{color:#ff8a93}
+    .nz-row,.nz-kv,.nz-ping{display:flex;align-items:center;gap:8px;font-size:11px;min-height:14px}
+    .nz-row .lb,.nz-kv .lb,.nz-ping .lb{width:36px;color:#8f8698;flex:none}
+    .nz-track{flex:1;height:7px;border-radius:5px;background:rgba(255,255,255,.09);overflow:hidden}
+    .nz-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,#74dbef,#2ca9e1 55%,#08f);transition:width .5s}
+    .nz-fill.hot{background:linear-gradient(90deg,#ffb74d,#f44336)}
+    .nz-val{width:104px;flex:none;text-align:right;color:#b9b2c0;white-space:nowrap}
+    .nz-kv .vl{flex:1;color:#b9b2c0;display:flex;gap:12px}
+    .nz-ping .nz-lat{width:46px;flex:none;text-align:right;font-weight:600}
+    .nz-segs{flex:1;display:flex;gap:2px;align-items:stretch;height:8px}
+    .nz-segs i{flex:1;border-radius:2px;background:rgba(255,255,255,.08)}
+    .nz-ping .nz-loss{width:32px;flex:none;text-align:right;color:#8f8698}
+    .nz-nodata{padding:50px 0;text-align:center;color:#8f8698}
+    .nz-err{background:rgba(244,67,54,.12);border:1px solid rgba(244,67,54,.35);color:#ff8a93;border-radius:9px;padding:9px 14px;margin-bottom:12px;font-size:12px}
+    .nz-dsrv{background:#372e41;border:1px solid rgba(255,255,255,.06);border-radius:11px;padding:12px 14px;margin-bottom:12px}
+    .nz-dhead{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+    .nz-drow{display:flex;align-items:center;gap:9px;font-size:11px;margin-bottom:6px}
+    .nz-drow .lb{width:36px;color:#8f8698;flex:none}
+    .nz-dsegs{flex:1;display:flex;gap:2px;height:14px}
+    .nz-dsegs i{flex:1;border-radius:3px;background:rgba(255,255,255,.08)}
+    .nz-drow .val{width:48px;flex:none;text-align:right;font-weight:600}
+    .nz-drow .ls{width:36px;flex:none;text-align:right;color:#8f8698}
+    .nz-foot{text-align:center;color:#6f6679;font-size:11px;padding:26px 0 10px}
+    .nz-fab{position:fixed;right:16px;bottom:16px;width:38px;height:38px;border-radius:50%;background:#453c4f;color:#ddd;border:1px solid rgba(255,255,255,.14);cursor:pointer;font-size:17px;z-index:90;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+    .nz-fab:hover{background:#514659}
+    .nz-menu{position:fixed;right:16px;bottom:62px;background:#2e2735;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:6px;display:none;flex-direction:column;min-width:160px;z-index:90;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+    .nz-menu.open{display:flex}
+    .nz-menu button{background:none;border:0;color:#ccc;padding:8px 12px;text-align:left;font-size:13px;border-radius:7px;cursor:pointer;font-family:inherit}
+    .nz-menu button:hover{background:rgba(255,255,255,.08);color:#fff}
+    .nz-menu button.cur{color:#4cc2ff}
+    .nz-map{position:relative;background:radial-gradient(120% 120% at 50% 0%,#2a2433 0%,#1f1a27 100%);border:1px solid rgba(255,255,255,.05);border-radius:12px;overflow:hidden;margin-bottom:14px}
+    .nz-map svg{display:block;width:100%;height:auto}
+    .nz-dot{fill:rgba(255,255,255,.07)}
+    .nz-marker{cursor:default}
+    .nz-marker .halo{fill:#08f;opacity:.18;animation:nzpulse 2.6s ease-in-out infinite}
+    .nz-marker .core{fill:#4cc2ff}
+    .nz-marker .ring{fill:none;stroke:#08f;stroke-width:1.2;opacity:.5}
+    .nz-marker .lbl{fill:#cfd6e6;font-size:11px;font-family:inherit}
+    @keyframes nzpulse{0%,100%{opacity:.12;r:9}50%{opacity:.28;r:15}}
+    .nz-ring-card{background:#372e41;border:1px solid rgba(255,255,255,.06);border-radius:11px;padding:12px 13px;display:flex;flex-direction:column;gap:10px}
+    .nz-ring-card.offline{opacity:.55}
+    .nz-ring-card .rc-head{display:flex;align-items:center;gap:7px;min-width:0}
+    .nz-ring-card .rc-name{font-weight:700;font-size:14px;color:#fff;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .nz-ring-card .rc-os{font-size:11px;color:#8f8698;flex:none;max-width:45%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .nz-rings{display:flex;gap:14px;justify-content:center}
+    .nz-ring{position:relative;width:62px;height:62px}
+    .nz-ring svg{width:62px;height:62px;transform:rotate(-90deg)}
+    .nz-ring .bg{fill:none;stroke:rgba(255,255,255,.10);stroke-width:3.4}
+    .nz-ring .fg{fill:none;stroke-width:3.4;stroke-linecap:round;transition:stroke-dashoffset .5s,stroke .3s}
+    .nz-ring .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#e8e5ec}
+    .nz-ring .cap{position:absolute;left:0;right:0;bottom:-2px;text-align:center;font-size:9px;color:#9a91a4}
+  </style>
+  <script>
+  (function () {
+    'use strict';
+    if (!document.body.classList.contains('style-nezha')) return;
+    document.body.classList.add('nezha-native');
+    var root = document.getElementById('nz-root');
+    root.hidden = false;
+    var REG = { CN:'\u{1F1E8}\u{1F1F3}', HK:'\u{1F1ED}\u{1F1F0}', MO:'\u{1F1F2}\u{1F1F4}', TW:'\u{1F1F9}\u{1F1FC}', JP:'\u{1F1EF}\u{1F1F5}', KR:'\u{1F1F0}\u{1F1F7}', KP:'\u{1F1F0}\u{1F1F5}', SG:'\u{1F1F8}\u{1F1EC}', MY:'\u{1F1F2}\u{1F1FE}', TH:'\u{1F1F9}\u{1F1ED}', VN:'\u{1F1FB}\u{1F1F3}', PH:'\u{1F1F5}\u{1F1ED}', ID:'\u{1F1EE}\u{1F1E9}', IN:'\u{1F1EE}\u{1F1F3}', US:'\u{1F1FA}\u{1F1F8}', CA:'\u{1F1E8}\u{1F1E6}', MX:'\u{1F1F2}\u{1F1FD}', BR:'\u{1F1E7}\u{1F1F7}', GB:'\u{1F1EC}\u{1F1E7}', UK:'\u{1F1EC}\u{1F1E7}', DE:'\u{1F1E9}\u{1F1EA}', FR:'\u{1F1EB}\u{1F1F7}', NL:'\u{1F1F3}\u{1F1F1}', RU:'\u{1F1F7}\u{1F1FA}', AU:'\u{1F1E6}\u{1F1FA}', NZ:'\u{1F1F3}\u{1F1FF}', TR:'\u{1F1F9}\u{1F1F7}', AE:'\u{1F1E6}\u{1F1EA}', SG2:'\u{1F1F8}\u{1F1EC}' };
+    var CYCLE = { month:'\u6708', quarter:'\u5B63', half_year:'\u534A\u5E74', year:'\u5E74', two_years:'\u4E24\u5E74', onetime:'\u4E70\u65AD' };
+    var S = { cfg:{}, servers:[], view:'card', region:'ALL', status:'ALL', err:'' };
+    function esc(x){ return String(x == null ? '' : x).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+    function num(x){ var v = Number(x); return isFinite(v) ? v : 0; }
+    function fmtBytes(b){ b = num(b); if (b <= 0) return '0 B'; var u = ['B','KB','MB','GB','TB','PB'], i = 0; while (b >= 1024 && i < u.length - 1) { b /= 1024; i++; } return (i === 0 ? b : b.toFixed(1)) + ' ' + u[i]; }
+    function fmtSpeed(b){ return fmtBytes(b) + '/s'; }
+    function pct(a, b){ if (!b) return 0; return Math.max(0, Math.min(100, a / b * 100)); }
+    function flag(r){ return REG[String(r || '').toUpperCase()] || '\u{1F310}'; }
+    function osIcon(os){ os = String(os || '').toLowerCase(); if (os.indexOf('win') > -1) return '\u{1FA9F}'; if (os.indexOf('darwin') > -1 || os.indexOf('mac') > -1) return '\u{1F34E}'; if (os.indexOf('android') > -1) return '\u{1F916}'; return '\u{1F427}'; }
+    function isOn(s){ var lu = num(s.last_updated); return lu > 0 && (Date.now() - lu) < 300000; }
+    var MB = 1048576;
+    function loadAvg(s){ var la = s.load_avg; if (typeof la === 'string') la = la.split(/[, ]+/).filter(Boolean); return (la || []).slice(0, 3).map(num); }
+    function ldColor(v){ return v >= 2 ? '#f44336' : v >= 1 ? '#ff9800' : '#4caf50'; }
+    function latColor(v){ if (!v || v <= 0) return '#6f6679'; if (v < 100) return '#4caf50'; if (v < 200) return '#cddc39'; if (v < 300) return '#ff9800'; return '#f44336'; }
+    function expireInfo(s){
+      var d = String(s.expire_date || '').trim();
+      if (!d) return '';
+      var t = new Date(d).getTime();
+      if (!isFinite(t) || t <= 0) return '';
+      var days = Math.ceil((t - Date.now()) / 86400000);
+      return { date: d, days: days };
+    }
+    function segsHTML(hist, key){
+      var out = '';
+      var arr = hist || [];
+      if (!arr.length) { for (var i = 0; i < 20; i++) out += '<i></i>'; return out; }
+      for (var j = 0; j < arr.length; j++) {
+        var v = num(arr[j] && arr[j][key]);
+        out += '<i style="background:' + (v > 0 ? latColor(v) : 'rgba(255,255,255,.08)') + '"></i>';
+      }
+      return out;
+    }
+    function rowBar(label, valueText, percent, hot){
+      return '<div class="nz-row"><span class="lb">' + label + '</span><div class="nz-track"><div class="nz-fill' + (hot ? ' hot' : '') + '" style="width:' + percent.toFixed(1) + '%"></div></div><span class="nz-val">' + valueText + '</span></div>';
+    }
+    function cardHTML(s){
+      var on = isOn(s);
+      var cpu = num(s.cpu);
+      var ramU = num(s.ram_used) * MB, ramT = num(s.ram_total) * MB;
+      var dkU = num(s.disk_used) * MB, dkT = num(s.disk_total) * MB;
+      var monR = num(s.net_rx_monthly), monT = num(s.net_tx_monthly);
+      var used = monR + monT, lim = num(s.traffic_limit) * MB;
+      var la = loadAvg(s);
+      var exp = expireInfo(s);
+      var ipb = (String(s.ip_v4) === '1' ? '<span class="ipb">IP4</span>' : '') + (String(s.ip_v6) === '1' ? '<span class="ipb">IP6</span>' : '');
+      var price = num(s.price);
+      var priceTxt = price > 0 ? esc(s.currency || '') + price + '/' + (CYCLE[s.billing_cycle] || esc(s.billing_cycle || '')) : '';
+      var h = '<div class="nz-card' + (on ? '' : ' offline') + '">';
+      h += '<div class="nz-card-head"><span class="nz-flag">' + flag(s.region) + '</span><span class="nz-name">' + esc(s.name) + '</span><span class="nz-os">' + osIcon(s.os) + '</span><span class="nz-badge ' + (on ? 'on' : 'off') + '">' + (on ? '\u5728\u7EBF' : '\u79BB\u7EBF') + '</span></div>';
+      h += '<div class="nz-sub">' + ipb + (priceTxt ? '<span>' + priceTxt + '</span>' : '') + (exp ? '<span class="' + (exp.days <= 30 ? 'exp' : '') + '">\u5230\u671F ' + esc(exp.date.slice(5)) + ' (' + (exp.days > 0 ? exp.days + '\u5929' : '\u5DF2\u8FC7\u671F') + ')</span>' : '') + '</div>';
+      h += rowBar('CPU', cpu.toFixed(1) + '%', cpu, cpu >= 80);
+      h += rowBar('\u5185\u5B58', fmtBytes(ramU) + ' / ' + fmtBytes(ramT), pct(ramU, ramT), ramT > 0 && ramU / ramT >= 0.8);
+      h += rowBar('\u786C\u76D8', fmtBytes(dkU) + ' / ' + fmtBytes(dkT), pct(dkU, dkT), dkT > 0 && dkU / dkT >= 0.8);
+      if (lim > 0) h += rowBar('\u7528\u91CF', fmtBytes(used) + ' / ' + fmtBytes(lim), pct(used, lim), used / lim >= 0.8);
+      else if (used > 0) h += rowBar('\u7528\u91CF', fmtBytes(used), 0, false);
+      h += '<div class="nz-kv"><span class="lb">\u8D1F\u8F7D</span><span class="vl">' + (la.length ? la.map(function(v){ return '<b style="color:' + ldColor(v) + ';font-weight:600">' + v.toFixed(2) + '</b>'; }).join(' ') : '-') + '</span></div>';
+      h += '<div class="nz-kv"><span class="lb">\u7F51\u7EDC</span><span class="vl"><span class="nz-up">\u2191 ' + fmtSpeed(num(s.net_out_speed)) + '</span><span class="nz-down">\u2193 ' + fmtSpeed(num(s.net_in_speed)) + '</span></span></div>';
+      h += '<div class="nz-kv"><span class="lb">\u6708\u6D41\u91CF</span><span class="vl"><span class="nz-down">\u2193 ' + fmtBytes(monR) + '</span><span class="nz-up">\u2191 ' + fmtBytes(monT) + '</span></span></div>';
+      var car = [['\u7535\u4FE1', 'ct'], ['\u8054\u901A', 'cu'], ['\u79FB\u52A8', 'cm']];
+      for (var i = 0; i < car.length; i++) {
+        var k = car[i][1], lv = num(s['ping_' + k]), ls = num(s['loss_' + k]);
+        h += '<div class="nz-ping"><span class="lb">' + car[i][0] + '</span><span class="nz-lat" style="color:' + latColor(lv) + '">' + (lv > 0 ? lv + 'ms' : '-') + '</span><div class="nz-segs">' + segsHTML(s.ping, k) + '</div><span class="nz-loss">' + ls.toFixed(0) + '%</span></div>';
+      }
+      h += '</div>';
+      return h;
+    }
+    function latencyHTML(s){
+      var on = isOn(s);
+      var h = '<div class="nz-dsrv">';
+      h += '<div class="nz-dhead"><span class="nz-flag">' + flag(s.region) + '</span><b style="color:#fff;font-size:14px">' + esc(s.name) + '</b><span class="nz-os">' + osIcon(s.os) + '</span><span style="flex:1"></span><span class="nz-badge ' + (on ? 'on' : 'off') + '">' + (on ? '\u5728\u7EBF' : '\u79BB\u7EBF') + '</span></div>';
+      var car = [['\u7535\u4FE1', 'ct', 'loss_ct'], ['\u8054\u901A', 'cu', 'loss_cu'], ['\u79FB\u52A8', 'cm', 'loss_cm']];
+      for (var i = 0; i < car.length; i++) {
+        var k = car[i][1], lv = num(s['ping_' + k]), ls = num(s[car[i][2]]);
+        h += '<div class="nz-drow"><span class="lb">' + car[i][0] + '</span><div class="nz-dsegs">' + segsHTML(s.ping, k) + '</div><span class="val" style="color:' + latColor(lv) + '">' + (lv > 0 ? lv + 'ms' : '-') + '</span><span class="ls">' + ls.toFixed(0) + '%</span></div>';
+      }
+      h += '</div>';
+      return h;
+    }
+    function ringCardHTML(s){
+      var on = isOn(s);
+      var cpu = num(s.cpu);
+      var memP = num(s.ram_total) > 0 ? num(s.ram_used) / num(s.ram_total) * 100 : 0;
+      var dkP = num(s.disk_total) > 0 ? num(s.disk_used) / num(s.disk_total) * 100 : 0;
+      function rgColor(v){ return v >= 85 ? '#f44336' : v >= 60 ? '#ff9800' : '#4caf50'; }
+      function ring(p, cap){
+        var C = 2 * Math.PI * 26.5;
+        var off = C * (1 - Math.max(0, Math.min(100, p)) / 100);
+        return '<div class="nz-ring"><svg viewBox="0 0 62 62"><circle class="bg" cx="31" cy="31" r="26.5"></circle><circle class="fg" cx="31" cy="31" r="26.5" stroke="' + rgColor(p) + '" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '"></circle></svg><span class="pct" style="color:' + rgColor(p) + '">' + p.toFixed(0) + '%</span><span class="cap">' + cap + '</span></div>';
+      }
+      var h = '<div class="nz-ring-card' + (on ? '' : ' offline') + '">';
+      h += '<div class="rc-head"><span class="rc-name">' + flag(s.region) + ' ' + esc(s.name) + '</span><span class="rc-os">' + (on ? osIcon(s.os) + ' ' + esc(String(s.os || '').slice(0, 26)) : '\u79BB\u7EBF') + '</span></div>';
+      h += '<div class="nz-rings">' + ring(cpu, 'CPU') + ring(memP, '\u5185\u5B58') + ring(dkP, '\u786C\u76D8') + '</div>';
+      h += '</div>';
+      return h;
+    }
+    var CENT = { CN:[35,105], HK:[22.3,114.2], MO:[22.2,113.5], TW:[23.7,121], JP:[36,138], KR:[36.5,127.8], KP:[40,127], SG:[1.35,103.8], MY:[4,102], TH:[15,101], VN:[16,107], PH:[12,122], ID:[-2,118], IN:[22,79], US:[39,-98], CA:[56,-106], MX:[23,-102], BR:[-10,-55], AR:[-34,-64], GB:[54,-2], UK:[54,-2], DE:[51,10], FR:[46,2], NL:[52.2,5.3], RU:[61,90], AU:[-25,133], NZ:[-41,174], TR:[39,35], AE:[24,54], SA:[24,45], PL:[52,19], ES:[40,-4], IT:[42,12], UA:[49,32] };
+    function mapHTML(servers){
+      var W = 1100, H = 550;
+      var byReg = {};
+      servers.forEach(function(s){ var r = String(s.region || '').toUpperCase() || '??'; if (!byReg[r]) byReg[r] = { n: 0, on: 0 }; byReg[r].n++; if (isOn(s)) byReg[r].on++; });
+      var h = '<div class="nz-map"><svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice">';
+      for (var gx = 14; gx < W; gx += 22) for (var gy = 14; gy < H; gy += 22) h += '<circle class="nz-dot" cx="' + gx + '" cy="' + gy + '" r="1.6"></circle>';
+      Object.keys(byReg).forEach(function(r){
+        var c = CENT[r];
+        if (!c) return;
+        var x = (c[1] + 180) / 360 * W, y = (90 - c[0]) / 180 * H;
+        var allOn = byReg[r].on === byReg[r].n;
+        var col = allOn ? '#4cc2ff' : '#f44336';
+        h += '<g class="nz-marker">';
+        h += '<circle class="halo" cx="' + x + '" cy="' + y + '" r="10" style="fill:' + col + '"></circle>';
+        h += '<circle class="ring" cx="' + x + '" cy="' + y + '" r="7" style="stroke:' + col + '"></circle>';
+        h += '<circle class="core" cx="' + x + '" cy="' + y + '" r="3.2" style="fill:' + col + '"></circle>';
+        h += '<text class="lbl" x="' + (x + 12) + '" y="' + (y + 4) + '">' + esc(r) + ' \u00D7' + byReg[r].n + '</text>';
+        h += '</g>';
+      });
+      h += '</svg></div>';
+      h += '<div class="nz-grid">' + servers.map(ringCardHTML).join('') + '</div>';
+      return h;
+    }
+    function render(){
+      var cfg = S.cfg || {};
+      var all = S.servers;
+      var onCnt = all.filter(isOn).length, offCnt = all.length - onCnt;
+      var tR = 0, tX = 0, sR = 0, sX = 0, value = {};
+      all.forEach(function(s){ tR += num(s.net_rx_monthly); tX += num(s.net_tx_monthly); sR += num(s.net_in_speed); sX += num(s.net_out_speed); var c = s.currency || ''; value[c] = (value[c] || 0) + num(s.price); });
+      var vis = all.filter(function(s){
+        if (S.region !== 'ALL' && String(s.region || '').toUpperCase() !== S.region) return false;
+        if (S.status === 'ON' && !isOn(s)) return false;
+        if (S.status === 'OFF' && isOn(s)) return false;
+        return true;
+      });
+      var regions = {}; all.forEach(function(s){ var r = String(s.region || '').toUpperCase() || '??'; regions[r] = (regions[r] || 0) + 1; });
+      var valueTxt = Object.keys(value).map(function(c){ return (c || '') + Math.round(value[c]); }).join(' \u00B7 ');
+      var h = '';
+      h += '<nav class="nz-nav"><div class="nz-nav-in"><span class="nz-logo"><span class="dot"></span>' + esc(cfg.site_title || 'Cloudflare Server Monitor') + '</span><div class="nz-nav-stats"><span>\u5171 ' + all.length + ' \u53F0</span><span class="sep">|</span><span>\u5728\u7EBF <b class="nz-on">' + onCnt + '</b></span><span>\u79BB\u7EBF <b class="nz-offc">' + offCnt + '</b></span><span class="sep">|</span><span>\u6D41\u91CF <span class="nz-up">\u2191' + fmtBytes(tX) + '</span> <span class="nz-down">\u2193' + fmtBytes(tR) + '</span></span><a class="nz-login" href="./admin">\u{1F464} \u767B\u5F55</a></div></div></nav>';
+      h += '<div class="nz-main"><div class="nz-panel">';
+      h += '<div class="nz-tabs"><button class="nz-tab' + (S.view === 'card' ? ' active' : '') + '" data-view="card">\u{1F4CA} \u5361\u7247</button><button class="nz-tab' + (S.view === 'latency' ? ' active' : '') + '" data-view="latency">\u{1F4C9} \u5EF6\u8FDF</button><button class="nz-tab' + (S.view === 'map' ? ' active' : '') + '" data-view="map">\u{1F5FA} \u5730\u56FE</button></div>';
+      h += '<div class="nz-chips"><button class="nz-chip' + (S.region === 'ALL' ? ' active' : '') + '" data-region="ALL">\u5168\u90E8<span class="n">' + all.length + '</span></button>';
+      Object.keys(regions).sort().forEach(function(r){ h += '<button class="nz-chip' + (S.region === r ? ' active' : '') + '" data-region="' + esc(r) + '">' + esc(r) + '<span class="n">' + regions[r] + '</span></button>'; });
+      h += '<span class="grow"></span><button class="nz-chip' + (S.status === 'ALL' ? ' active' : '') + '" data-status="ALL">\u5168\u90E8</button><button class="nz-chip' + (S.status === 'ON' ? ' active' : '') + '" data-status="ON">\u5728\u7EBF</button><button class="nz-chip' + (S.status === 'OFF' ? ' active' : '') + '" data-status="OFF">\u79BB\u7EBF</button></div>';
+      h += '<div class="nz-stats">';
+      h += '<div class="nz-stat"><div class="lb">\u670D\u52A1</div><div class="vl"><span class="nz-on" style="font-weight:700">' + vis.filter(isOn).length + '</span> / ' + vis.length + '</div></div>';
+      h += '<div class="nz-stat"><div class="lb">\u603B\u6D41\u91CF</div><div class="vl"><span class="nz-up">\u2191 ' + fmtBytes(tX) + '</span> <span class="nz-down">\u2193 ' + fmtBytes(tR) + '</span></div></div>';
+      h += '<div class="nz-stat"><div class="lb">\u5B9E\u65F6\u901F\u5EA6</div><div class="vl"><span class="nz-up">\u2191 ' + fmtSpeed(sX) + '</span> <span class="nz-down">\u2193 ' + fmtSpeed(sR) + '</span></div></div>';
+      h += '<div class="nz-stat"><div class="lb">\u5269\u4F59\u4EF7\u503C</div><div class="vl" style="color:#4cc2ff">' + (valueTxt || '-') + '</div></div>';
+      h += '</div>';
+      if (S.err) h += '<div class="nz-err">' + esc(S.err) + '</div>';
+      if (!vis.length) {
+        h += '<div class="nz-nodata">\u6CA1\u6709\u7B26\u5408\u6761\u4EF6\u7684\u670D\u52A1\u5668</div>';
+      } else if (S.view === 'card') {
+        var groups = {}, gOrder = [];
+        vis.forEach(function(s){ var g = s.server_group || 'Default'; if (!groups[g]) { groups[g] = []; gOrder.push(g); } groups[g].push(s); });
+        gOrder.forEach(function(g){
+          h += '<div class="nz-group">' + esc(g) + ' <span class="n">[' + groups[g].length + ']</span></div>';
+          h += '<div class="nz-grid">' + groups[g].map(cardHTML).join('') + '</div>';
+        });
+      } else if (S.view === 'latency') {
+        h += '<div style="padding-top:4px">' + vis.map(latencyHTML).join('') + '</div>';
+      } else {
+        h += mapHTML(vis);
+      }
+      h += '</div><div class="nz-foot">Powered by Cloudflare Server Monitor \u00B7 Nazhua \u98CE\u683C</div></div>';
+      h += '<button class="nz-fab" id="nz-fab" title="\u98CE\u683C\u5207\u6362">\u2699</button><div class="nz-menu" id="nz-menu"></div>';
+      root.innerHTML = h;
+    }
+    function wire(){
+      root.addEventListener('click', function(e){
+        var t = e.target;
+        var tab = t.closest ? t.closest('.nz-tab') : null;
+        if (tab) { S.view = tab.getAttribute('data-view'); render(); return; }
+        var chip = t.closest ? t.closest('.nz-chip') : null;
+        if (chip) {
+          if (chip.hasAttribute('data-region')) S.region = chip.getAttribute('data-region');
+          else if (chip.hasAttribute('data-status')) S.status = chip.getAttribute('data-status');
+          render(); return;
+        }
+        if (t.id === 'nz-fab') { var m = document.getElementById('nz-menu'); if (m) m.classList.toggle('open'); return; }
+        var mb = t.closest ? t.closest('.nz-menu button') : null;
+        if (mb) {
+          try { localStorage.removeItem('win2000_style'); localStorage.setItem('win2000_style_site', mb.getAttribute('data-style')); } catch (err) {}
+          location.reload();
+        }
+      });
+      var menu = document.getElementById('nz-menu');
+      if (menu) {
+        var styles = [['nezha', 'Nazhua \u54EA\u5410\u63A2\u9488'], ['win2000', 'Windows 2000'], ['win11', 'Windows 11'], ['xp', 'Windows XP'], ['win31', 'Windows 3.1'], ['osx', 'macOS']];
+        menu.innerHTML = styles.map(function(x){ return '<button data-style="' + x[0] + '"' + (x[0] === 'nezha' ? ' class="cur"' : '') + '>' + x[1] + '</button>'; }).join('');
+      }
+    }
+    async function load(){
+      try {
+        var rc = await fetch('/api/config', { cache: 'no-store' });
+        S.cfg = await rc.json();
+      } catch (e) { S.cfg = {}; }
+      try {
+        var rs = await fetch('/api/servers', { cache: 'no-store' });
+        var d = await rs.json();
+        S.servers = (d.servers || []).filter(function(s){ return String(s.is_hidden) !== '1'; });
+        S.err = '';
+      } catch (e) { S.err = '\u6570\u636E\u52A0\u8F7D\u5931\u8D25\uFF1A' + e.message; }
+      render();
+    }
+    wire();
+    load();
+    setInterval(load, 15000);
+  })();
+  </script>
 </body>
 </html>
