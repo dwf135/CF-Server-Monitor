@@ -91,7 +91,7 @@ body.style-nezha .title-bar.inactive{background:transparent;color:var(--text-mut
 body.style-nezha .server-card{padding:0 0 12px;border:1px solid var(--row-line);border-radius:12px;background:var(--window);box-shadow:0 2px 12px rgba(0,0,0,.18)}
 body.style-nezha .server-card.offline{border-color:rgba(216,0,15,.5);background:rgba(216,0,15,.05)}
 body.style-nezha .server-card>.title-bar{height:34px;padding:0 12px;gap:8px;background:var(--window-alt);color:var(--text);border-bottom:1px solid var(--row-line);border-radius:12px 12px 0 0}
-body.style-nezha .server-card>.title-bar .title-bar-text{flex:1;min-width:0;font-size:13px;font-weight:600;color:var(--text)}
+body.style-nezha .server-card>.title-bar .title-bar-text{flex:1;min-width:0;font-size:15px;font-weight:700;color:#fff}
 body.style-nezha .server-card>.title-bar.inactive{color:var(--text-muted);background:var(--window-alt)}
 body.style-nezha .card-status{display:inline-flex;align-items:center;gap:6px;height:20px;padding:0 10px;border-radius:10px;font-size:11px;font-weight:600;line-height:1;background:rgba(76,175,80,.16);color:#7fd992;border:none;text-shadow:none}
 body.style-nezha .card-status .led{width:8px;height:8px;border:none;border-radius:50%;background:#4caf50;box-shadow:0 0 6px rgba(76,175,80,.7)}
@@ -153,3 +153,17 @@ body.style-nezha.light .status-bar{background:#f5f7fa;color:#8a8f99;border-top-c
 body.style-nezha.light .groupbox{background:#fff;border-color:#e6e9ef}
 body.style-nezha.light .listview .col-head{background:#f5f7fa;color:#8a8f99;border-bottom-color:#e6e9ef}
 body.style-nezha.light .listview tbody tr:hover{background:var(--select-bg);color:var(--select-text)}
+/* ---- nezha: strip desktop-OS chrome so it reads as a pure Nazhua dashboard ---- */
+body.style-nezha .server-card .title-btn,body.style-nezha .server-card .title-btn-last{display:none}
+body.style-nezha .app-window>.title-bar .title-btn,body.style-nezha .app-window>.title-bar .title-btn-last{display:none}
+body.style-nezha .win .title-btn,body.style-nezha .win .title-btn-last{display:none}
+body.style-nezha .raised,body.style-nezha .thin-raised{background:var(--face);border:1px solid var(--row-line);border-radius:8px;box-shadow:none}
+body.style-nezha .sunken,body.style-nezha .thin-sunken{background:var(--window);border:1px solid var(--row-line);border-radius:8px;box-shadow:none}
+body.style-nezha .card-body{padding:10px 12px;gap:8px}
+body.style-nezha .server-card>.title-bar .title-bar-icon{width:20px;height:20px;border-radius:4px}
+body.style-nezha .progress{height:10px}
+body.style-nezha .server-card .card-meta{margin:0}
+body.style-nezha .server-card{box-shadow:0 4px 16px rgba(0,0,0,.22)}
+body.style-nezha .server-card>.title-bar{border-bottom:1px solid var(--row-line)}
+body.style-nezha.light .raised,body.style-nezha.light .thin-raised{background:#fff;border:1px solid #e6e9ef;border-radius:8px;box-shadow:none}
+body.style-nezha.light .sunken,body.style-nezha.light .thin-sunken{background:#fff;border:1px solid #e6e9ef;border-radius:8px;box-shadow:none}
